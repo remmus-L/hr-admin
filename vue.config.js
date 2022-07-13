@@ -36,6 +36,17 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    proxy: {
+      '/abc': {
+        target: 'http://ihrm.itheima.net/',
+        changeOrigin: true,
+        pathRewrite: {
+          // 相当于是在做replace替换操作
+          // 为什么要写^,不写的话api接口url中间万一有abc也会被替换成'
+          '^/abc': ''
+        }
+      }
     }
     // 因为我们有自己的接口
     // before: require('./mock/mock-server.js')
@@ -50,7 +61,7 @@ module.exports = {
       }
     }
   },
-  chainWebpack(config) {
+  chainWebpack (config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload
     config.plugin('preload').tap(() => [
       {
